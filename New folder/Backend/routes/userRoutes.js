@@ -1,5 +1,5 @@
 const express = require('express');
-const { register, login, getCurrentUser, getAllUsersEndpoint, getUserById, addUser, editUser, deleteUserEndpoint, gmailLogin, googleLogin } = require('../controllers/userController');
+const { register, login, getCurrentUser, getAllUsersEndpoint, getUserById, addUser, editUser, deleteUserEndpoint, googleLogin } = require('../controllers/userController');
 const { verifyToken, verifyAdmin } = require('../middleware/authMiddleware');
 
 const router = express.Router();
@@ -7,7 +7,6 @@ const router = express.Router();
 // Public routes
 router.post('/register', register);
 router.post('/login', login);
-router.post('/gmail-login', gmailLogin);
 router.post('/google-login', googleLogin);
 
 // Protected routes

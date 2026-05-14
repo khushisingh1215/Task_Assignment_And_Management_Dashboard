@@ -82,7 +82,8 @@ export const fetchRecentTasks = async () => {
     console.error('fetchRecentTasks status', response.status);
     throw new Error('Failed to fetch recent tasks');
   }
-  return response.json();
+  const data = await response.json();
+  return data.tasks || data;
 };
 
 // Create task

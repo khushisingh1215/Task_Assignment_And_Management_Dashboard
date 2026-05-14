@@ -75,36 +75,6 @@ export const loginUser = async (email, password) => {
   return data;
 };
 
-// Gmail-only login/register (no OAuth)
-export const gmailLogin = async (email, name = '') => {
-  const response = await fetch(`${API_URL}/users/gmail-login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email, name }),
-  });
-
-  const contentType = response.headers.get('content-type') || '';
-  let data;
-  if (contentType.includes('application/json')) {
-    try {
-      data = await response.json();
-    } catch (e) {
-      const raw = await response.text();
-      console.error('Failed to parse JSON response (gmail login)', raw);
-      throw new Error('Server returned invalid JSON');
-    }
-  } else {
-    const raw = await response.text();
-    if (raw) {
-      console.error('Unexpected non-JSON response (gmail login)', response.status, raw);
-      throw new Error(`Server returned non-JSON response (status ${response.status})`);
-    }
-    data = {};
-  }
-  if (!response.ok) throw new Error(data.error || 'Gmail login failed');
-  return data;
-};
-
 // Google OAuth idToken login
 export const googleLogin = async (idToken) => {
   const response = await fetch(`${API_URL}/users/google-login`, {

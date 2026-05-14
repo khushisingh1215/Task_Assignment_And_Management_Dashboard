@@ -203,7 +203,6 @@ taskmanage/
     │   │   ├── taskRoutes.js
     │   │   └── userRoutes.js
     │   ├── services/
-    │   ├── setup-demo-user.js
     │   ├── reset-users-table.js
     │   ├── server.js
     │   └── package.json
@@ -249,7 +248,7 @@ taskmanage/
 
 ## 📊 Sample Data
 
-This project ships with a demo user and ready-to-use task functionality. Add sample tasks through the UI to verify live counts and progress.
+This project provides ready-to-use task functionality. Add sample tasks through the UI to verify live counts and progress.
 
 ---
 

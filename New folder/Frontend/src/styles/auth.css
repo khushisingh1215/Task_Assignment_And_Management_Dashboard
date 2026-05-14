@@ -168,33 +168,6 @@
   cursor: not-allowed;
 }
 
-.gmail-button {
-  width: 100%;
-  padding: 0.9rem;
-  background-color: #f5f5f5;
-  color: #333;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-}
-
-.gmail-button:hover:not(:disabled) {
-  background-color: #e8e8e8;
-  border-color: #bbb;
-}
-
-.gmail-button:disabled {
-  opacity: 0.7;
-  cursor: not-allowed;
-}
-
 /* Responsive Design */
 @media (max-width: 480px) {
   .auth-container {

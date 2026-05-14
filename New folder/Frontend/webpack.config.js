@@ -40,8 +40,9 @@ module.exports = {
   devServer: {
     port: FRONTEND_PORT,
     allowedHosts: 'all',
-    proxy: {
-      '/api': {
+    proxy: [
+      {
+        context: ['/api'],
         target: BACKEND_URL,
         changeOrigin: true,
         secure: false,
@@ -51,7 +52,7 @@ module.exports = {
           proxyReq.setHeader('X-Dev-Proxy', 'webpack-dev-server');
         }
       }
-    },
+    ],
   },
 };
 

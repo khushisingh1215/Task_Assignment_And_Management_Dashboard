@@ -106,30 +106,6 @@ const login = async (req, res) => {
   }
 };
 
-// Gmail-only login/register (no OAuth): allows users with @gmail.com to sign up/login using just their email
-const gmailLogin = async (req, res) => {
-  try {
-    const { email, name } = req.body;
-
-    if (!email) return res.status(400).json({ error: 'Email is required' });
-    if (!email.toLowerCase().endsWith('@gmail.com')) return res.status(400).json({ error: 'Only Gmail addresses are allowed for this flow' });
-
-    let user = await findUserByEmail(email);
-    if (!user) {
-      // create user without password
-      const displayName = name || email.split('@')[0];
-      user = await createUser(displayName, email, null, { provider: 'gmail' });
-    }
-
-    const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, JWT_SECRET, { expiresIn: '7d' });
-
-    res.json({ message: 'Login successful', token, user: { id: user.id, name: user.name, email: user.email, role: user.role } });
-  } catch (error) {
-    console.error('✗ Gmail login error:', error.message);
-    res.status(500).json({ error: 'Gmail login failed' });
-  }
-};
-
 // Google OAuth login: verify idToken from Google Identity Services
 const googleLogin = async (req, res) => {
   try {
@@ -324,6 +300,5 @@ module.exports = {
   editUser,
   deleteUserEndpoint,
   JWT_SECRET,
-  gmailLogin,
   googleLogin
 };

@@ -10,7 +10,7 @@ const RecentActivity = () => {
   const loadTasks = async () => {
     try {
       const data = await fetchRecentTasks();
-      setTasks(data);
+      setTasks(data.tasks || data);
     } catch (error) {
       console.error('Error loading tasks:', error);
     }

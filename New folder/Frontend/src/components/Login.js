@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { loginUser, registerUser, gmailLogin, setToken } from '../services/authService';
+import { loginUser, registerUser, setToken } from '../services/authService';
 import '../styles/auth.css';
 
 function Login({ onLogin }) {
@@ -46,21 +46,6 @@ function Login({ onLogin }) {
         setToken(response.token);
         navigate('/');
       }
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleGmailOnly = async () => {
-    try {
-      setLoading(true);
-      setError('');
-      if (!formData.email) return setError('Please enter your Gmail address');
-      const res = await gmailLogin(formData.email, formData.name);
-      setToken(res.token);
-      navigate('/');
     } catch (err) {
       setError(err.message);
     } finally {
@@ -159,12 +144,6 @@ function Login({ onLogin }) {
               {isLogin ? 'Register' : 'Login'}
             </button>
           </p>
-        </div>
-
-        <div style={{marginTop: '12px', textAlign: 'center'}}>
-          <button type="button" className="gmail-button" onClick={handleGmailOnly} disabled={loading}>
-            Continue with Gmail (no password)
-          </button>
         </div>
 
       </div>

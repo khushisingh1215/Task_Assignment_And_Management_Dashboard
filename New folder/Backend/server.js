@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-const path = require('path');
 require('dotenv').config();
 const pool = require("./config/db");
 
@@ -21,9 +20,6 @@ app.use(cors({
   allowedHeaders: "Content-Type"
 }));
 app.use(express.json());
-
-// Serve static files from React build
-app.use(express.static(path.join(__dirname, '../Frontend/dist')));
 
 // --------------------- HEALTH CHECK ---------------------
 app.get('/api/health', async (req, res) => {
@@ -79,12 +75,6 @@ async function initDB() {
     // Continue startup even if init fails - table might already exist
   }
 }
-
-// --------------------- REACT APP ---------------------
-// Serve React app for all non-API routes
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../Frontend/dist', 'index.html'));
-});
 
 // --------------------- START SERVER ---------------------
 let server;
