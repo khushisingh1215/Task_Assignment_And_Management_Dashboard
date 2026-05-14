@@ -1,5 +1,5 @@
-// NOTE: use relative path so dev-server proxy and same-origin production both work
-const API_URL = '/api';
+// Production backend URL for Render deployment
+const API_URL = 'https://task-assignment-and-management-dashboard.onrender.com/api';
 
 // Register user
 export const registerUser = async (name, email, password, confirmPassword) => {

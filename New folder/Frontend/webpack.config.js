@@ -2,7 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const FRONTEND_PORT = process.env.PORT ? Number(process.env.PORT) : 3005;
-const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:3001';
+const BACKEND_URL = process.env.BACKEND_URL || 'https://task-assignment-and-management-dashboard.onrender.com';
 
 module.exports = {
   entry: './src/index.js',

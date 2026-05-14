@@ -1,5 +1,5 @@
-// relative path so it works with dev proxy and production same origin
-const API_URL = '/api';
+// Production backend URL for Render deployment
+const API_URL = 'https://task-assignment-and-management-dashboard.onrender.com/api';
 
 // Get authorization header with token
 const getAuthHeaders = () => {
