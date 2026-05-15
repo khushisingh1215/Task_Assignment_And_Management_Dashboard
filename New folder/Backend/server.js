@@ -16,10 +16,13 @@ const PORT = process.env.PORT || 3001;
 // --------------------- MIDDLEWARE ---------------------
 app.use(cors({
   origin: "*",
-  methods: "GET,POST,PUT,DELETE",
-  allowedHeaders: "Content-Type"
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  optionsSuccessStatus: 204,
 }));
+app.options('*', cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // --------------------- HEALTH CHECK ---------------------
 app.get('/api/health', async (req, res) => {
