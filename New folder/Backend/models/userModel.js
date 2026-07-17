@@ -25,6 +25,18 @@ const initUserTable = async () => {
     await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP`);
     await pool.query(`ALTER TABLE users ALTER COLUMN password DROP NOT NULL`);
 
+    const adminEmail = process.env.DEFAULT_ADMIN_EMAIL || 'admin@taskmanager.com';
+    const adminPassword = process.env.DEFAULT_ADMIN_PASSWORD || 'Admin@123';
+    const existingAdmin = await pool.query(
+      'SELECT id FROM users WHERE role = $1 OR email = $2 LIMIT 1',
+      ['admin', adminEmail]
+    );
+
+    if (existingAdmin.rows.length === 0) {
+      await createUser('Admin', adminEmail, adminPassword, { role: 'admin' });
+      console.log('✓ Default admin user created');
+    }
+
     console.log('✓ Users table initialized/updated');
   } catch (error) {
     console.error('✗ Error creating/updating users table:', error.message);

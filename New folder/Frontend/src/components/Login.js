@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { loginUser, registerUser, setToken } from '../services/authService';
+import { loginUser, registerUser } from '../services/authService';
 import '../styles/auth.css';
 
 function Login({ onLogin }) {
@@ -32,19 +32,19 @@ function Login({ onLogin }) {
 
     try {
       if (isLogin) {
-        // Login
-        const response = await loginUser(formData.email, formData.password);
-        setToken(response.token);
+        await loginUser(formData.email, formData.password);
         if (onLogin) {
           onLogin();
         } else {
           navigate('/');
         }
       } else {
-        // Register
-        const response = await registerUser(formData.name, formData.email, formData.password, formData.confirmPassword);
-        setToken(response.token);
-        navigate('/');
+        await registerUser(formData.name, formData.email, formData.password, formData.confirmPassword);
+        if (onLogin) {
+          onLogin();
+        } else {
+          navigate('/');
+        }
       }
     } catch (err) {
       setError(err.message);

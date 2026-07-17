@@ -1,5 +1,42 @@
+import { jwtDecode } from 'jwt-decode';
+
 // Production backend URL for Render deployment
 const API_URL = 'https://task-assignment-and-management-dashboard.onrender.com/api';
+const USER_STORAGE_KEY = 'authUser';
+
+const persistUser = (user) => {
+  if (user) {
+    localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(user));
+  } else {
+    localStorage.removeItem(USER_STORAGE_KEY);
+  }
+};
+
+export const getStoredUser = () => {
+  try {
+    const rawUser = localStorage.getItem(USER_STORAGE_KEY);
+    return rawUser ? JSON.parse(rawUser) : null;
+  } catch (error) {
+    console.error('Failed to parse stored user:', error);
+    return null;
+  }
+};
+
+export const getUserRole = () => {
+  const storedUser = getStoredUser();
+  if (storedUser?.role) return storedUser.role;
+
+  const token = getToken();
+  if (!token) return null;
+
+  try {
+    const decoded = jwtDecode(token);
+    return decoded?.role || null;
+  } catch (error) {
+    console.error('Failed to decode token for role:', error);
+    return null;
+  }
+};
 
 // Register user
 export const registerUser = async (name, email, password, confirmPassword) => {
@@ -35,6 +72,7 @@ export const registerUser = async (name, email, password, confirmPassword) => {
     throw new Error(data.error || 'Registration failed');
   }
 
+  setToken(data.token, data.user);
   return data;
 };
 
@@ -72,6 +110,7 @@ export const loginUser = async (email, password) => {
     throw new Error(data.error || 'Login failed');
   }
 
+  setToken(data.token, data.user);
   return data;
 };
 
@@ -141,9 +180,10 @@ export const getCurrentUser = async (token) => {
   return data;
 };
 
-// Store token
-export const setToken = (token) => {
+// Store token and user
+export const setToken = (token, user = null) => {
   localStorage.setItem('authToken', token);
+  persistUser(user);
 };
 
 // Get token
@@ -154,6 +194,7 @@ export const getToken = () => {
 // Remove token
 export const removeToken = () => {
   localStorage.removeItem('authToken');
+  localStorage.removeItem(USER_STORAGE_KEY);
 };
 
 // Check if user is authenticated

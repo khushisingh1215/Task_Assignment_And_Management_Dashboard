@@ -9,27 +9,18 @@ import Login from './components/Login';
 import ProtectedRoute from './components/ProtectedRoute';
 import UserManagement from './components/UserManagement';
 import EditUserPage from './components/EditUserPage';
-import { isAuthenticated, removeToken, getToken } from './services/authService';
-import { jwtDecode } from 'jwt-decode';
+import { isAuthenticated, removeToken, getToken, getUserRole } from './services/authService';
 
 function AppContent() {
   const location = useLocation();
   const navigate = useNavigate();
   const [authenticated, setAuthenticated] = useState(isAuthenticated());
-  const [userRole, setUserRole] = useState(null);
+  const [userRole, setUserRole] = useState(getUserRole());
 
   // keep local state in sync with token / navigation
   useEffect(() => {
     setAuthenticated(isAuthenticated());
-    const token = getToken();
-    if (token) {
-      try {
-        const decoded = jwtDecode(token);
-        setUserRole(decoded.role);
-      } catch (error) {
-        console.error('Failed to decode token:', error);
-      }
-    }
+    setUserRole(getUserRole());
   }, [location]);
 
   const handleLogout = () => {
@@ -43,15 +34,7 @@ function AppContent() {
   // parent component's authenticated state is updated immediately
   const handleLoginSuccess = () => {
     setAuthenticated(true);
-    const token = getToken();
-    if (token) {
-      try {
-        const decoded = jwtDecode(token);
-        setUserRole(decoded.role);
-      } catch (error) {
-        console.error('Failed to decode token:', error);
-      }
-    }
+    setUserRole(getUserRole());
     navigate('/');
   };
 
